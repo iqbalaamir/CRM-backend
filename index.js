@@ -10,6 +10,17 @@ app.use(bodyParser.urlencoded({extended:true}));
 const serverConfig = require('./configs/server.config')
 const User = require('./models/user.model');
 const constants = require('./utils/constants');
+const allowedOrigins =
+  [
+    'http://localhost:3000/',
+  ];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 // connectiong with mongoDB
 mongoose.connect(serverConfig.DB_URL);
 const db = mongoose.connection;
@@ -61,17 +72,6 @@ require('./routes/user.route')(app);
 require('./routes/service.route')(app);
 require('./routes/auth.route')(app);
 
-const allowedOrigins =
-  [
-    'http://localhost:3000/',
-  ];
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-  })
-);
 module.exports = app.listen(serverConfig.PORT, () => {
     console.log("Server is runing ar PORT : " + serverConfig.PORT)
 })
