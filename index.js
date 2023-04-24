@@ -4,15 +4,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const cors = require('cors');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
-
-const serverConfig = require('./configs/server.config')
-const User = require('./models/user.model');
-const constants = require('./utils/constants');
 const allowedOrigins =
   [
-    'http://localhost:3000/',
+    'http://localhost:3000'
   ];
 app.use(
   cors({
@@ -21,6 +15,12 @@ app.use(
     credentials: true,
   })
 );
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+const serverConfig = require('./configs/server.config')
+const User = require('./models/user.model');
+const constants = require('./utils/constants');
 // connectiong with mongoDB
 mongoose.connect(serverConfig.DB_URL);
 const db = mongoose.connection;
