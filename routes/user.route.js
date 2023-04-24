@@ -6,7 +6,7 @@ module.exports = (app) => {
 
     app.get('/crm/api/v1/users' , [authJwt.verifyToken ], userController.findAllUser);
 
-    app.get('/crm/api/v1/users/:id', [authJwt.verifyToken, authJwt.isValidUserIdInParams, authJwt.isAdminOrManager], userController.findByUserId);
+    app.get('/crm/api/v1/users/:id', [authJwt.verifyToken,  authJwt.isAdminOrManager], userController.findByUserId);
 
     app.put('/crm/api/v1/users/:id', [authJwt.verifyToken, authJwt.isAdminOrManager], userController.update);
 

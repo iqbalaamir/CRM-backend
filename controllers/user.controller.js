@@ -30,7 +30,7 @@ exports.findAllUser = async (req, res) => {
 exports.findByUserId = async (req, res) => {
     try{
 
-        const user = await User.find({id : req.params});
+        const user = await User.findById({id : req.params});
         res.status(200).send(objectConverter.userResponse(user))
 
     }catch(err){

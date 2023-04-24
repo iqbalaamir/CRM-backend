@@ -4,6 +4,7 @@ exports.userResponse = (users) => {
 
     users.forEach(user => {
         userResult.push({
+            id : user._id,
             name : user.name,
             userId : user.userId,
             email : user.email,
