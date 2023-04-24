@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
+const cors = require('cors');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -60,7 +61,17 @@ require('./routes/user.route')(app);
 require('./routes/service.route')(app);
 require('./routes/auth.route')(app);
 
-
+const allowedOrigins =
+  [
+    'http://localhost:3000',
+  ];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 module.exports = app.listen(serverConfig.PORT, () => {
     console.log("Server is runing ar PORT : " + serverConfig.PORT)
 })
