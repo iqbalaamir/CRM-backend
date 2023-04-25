@@ -2,6 +2,7 @@ const Contact = require('../models/contact.model');
 
 // Create a new contact
 exports.create = async (req, res) => {
+  console.log(req.body)
   try {
     const newContact = new Contact({
       firstName: req.body.firstName,
@@ -17,7 +18,7 @@ exports.create = async (req, res) => {
   } catch (err) {
     console.log("error in creating contact : ", err.message);
     res.status(500).send({
-      message: "Internal server error"
+      message: err.message
     });
   }
 };

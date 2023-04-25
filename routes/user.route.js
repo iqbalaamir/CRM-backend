@@ -17,6 +17,9 @@ router.delete('/delete/:id', [authJwt.verifyToken, authJwt.isAdminOrManager,auth
 
 router.put('/statusUpdate/:id',userController.updateUserStatus);
 
+router.get('/user', authJwt.verifyToken, userController.getUserByToken);
+  
+
 
 
 module.exports  = router;

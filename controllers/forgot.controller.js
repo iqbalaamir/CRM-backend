@@ -59,10 +59,9 @@ exports.forgot = async (req, res) => {
         const token = generateToken();
         // Store the token in the database
         const expires = Date.now() + 86400000;
-        console.log(`${serverConfig.BASE_URL}/reset-password?email=${email}&token=${token}`)
         await storeToken(email, token, expires);
         // Generate a reset password link with the token encoded in the URL
-        const resetLink = `${serverConfig.BASE_URL}/crm/api/v1/reset-password?email=${email}&token=${token}`;
+        const resetLink = `${serverConfig.BASE_URL}/forgot-password?email=${email}&token=${token}`;
         // Send the reset password link to the user via email
         const mailOptions = {
             from: 'aamirfreelance040@gmail.com',
@@ -71,7 +70,7 @@ exports.forgot = async (req, res) => {
             html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`,
         };
         await transporter.sendMail(mailOptions);
-        console.log("hello1")
+        res.status(200).json({ message: 'Mail Sent' });
 
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });

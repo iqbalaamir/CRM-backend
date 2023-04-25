@@ -9,7 +9,7 @@ router.get('/', leadController.getLeads);
 router.post('/create', [authJwt.verifyToken,authJwt.isAdminOrManager], leadController.createLead);
 router.get('/:id', leadController.getLeadById);
 router.get('/search',leadController.search);
-router.put('/upload/:id', [authJwt.verifyToken,authJwt.isAdminOrManager] , leadController.updateLead);
+router.put('/update/:id', [authJwt.verifyToken,authJwt.isAdminOrManager] , leadController.updateLead);
 router.delete('/delete/:id',[authJwt.verifyToken,authJwt.isAdminOrManager] , leadController.deleteLead);
 
 // Leads routes
