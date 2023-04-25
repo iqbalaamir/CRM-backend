@@ -32,7 +32,7 @@ exports.findByUserId = async (req, res) => {
     try{
         console.log(req.params.id)
         const user = await User.findOne({userId : req.params.id});
-        res.status(200).send(objectConverter.userResponse(user))
+        res.status(200).send(user)
 
     }catch(err){
         console.log("Error in find by user id :", err.message);
