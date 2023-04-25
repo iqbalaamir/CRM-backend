@@ -61,7 +61,7 @@ exports.signin = async (req, res) => {
                 message : "Failed !! User is still pending !! Unable to login !!!"
             })
         }
-
+        console.log(req.body.password)
         const isValidPassword = bcrypt.compareSync(req.body.password, user.password);
         if(!isValidPassword){
             return res.status(400).send({

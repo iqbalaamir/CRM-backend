@@ -17,7 +17,7 @@ exports.createLead = async (req, res) => {
     res.status(201).json(savedLead);
   } catch (err) {
     console.log('Error in creating lead:', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: err.message });
   }
 };
 

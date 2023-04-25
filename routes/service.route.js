@@ -1,11 +1,15 @@
+
+const express = require('express');
+const router = express.Router();
+
 const serviceController = require('../controllers/service.controller');
 
-module.exports = (app) => {
-    
-// Services routes
-app.get('/crm/api/v1/services', serviceController.readAll);
-app.post('/crm/api/v1/services', serviceController.create);
-app.get('/crm/api/v1/services/:id', serviceController.readOne);
-app.put('/crm/api/v1/services/:id', serviceController.update);
-app.delete('/crm/api/v1/services/:id', serviceController.delete);
-}
+router.get('/', serviceController.readAll);
+router.post('/create', serviceController.create);
+router.get('/read/:id', serviceController.readOne);
+router.put('/update/:id', serviceController.update);
+router.delete('/delete/:id', serviceController.delete);
+
+
+
+module.exports  = router;

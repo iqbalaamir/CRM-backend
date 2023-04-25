@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const cors = require('cors');
+const multer = require('multer');
+const routes = require('./routes/index.js');
+const path = require('path');
 const allowedOrigins =
   [
     'http://localhost:3000'
@@ -15,8 +18,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 const serverConfig = require('./configs/server.config')
 const User = require('./models/user.model');
@@ -46,10 +49,10 @@ async function init(){
         }
     
         user = await User.create({
-            name : "Aamir Iqbal",
-            userId : "aam",
-            password : bcrypt.hashSync("aami98", 10),
-            email : "aamir.iqbal040@gmail.com",
+            name : "Admin",
+            userId : 1,
+            password : bcrypt.hashSync("admin123!", 10),
+            email : "admin@gmail.com",
             userType : constants.userType.admin,
             userStatus : constants.userStatus.approved
         })
@@ -61,16 +64,31 @@ async function init(){
     }
 };
 
+
+const PUBLIC_DIR = path.resolve(__dirname, "../public");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, PUBLIC_DIR + '/uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+})
+
+const upload = multer({ storage: storage });
+app.use('/crm/api/v1', upload.single('image'), routes);
+
 app.get("/", (req, res) => {
     res.send("Hello !! Welcome to CRM App")
 })
 
 // Require all routes
-require('./routes/forget.route')(app);
-require('./routes/leads.route')(app);
-require('./routes/user.route')(app);
-require('./routes/service.route')(app);
-require('./routes/auth.route')(app);
+// require('./routes/forget.route')(app);
+// require('./routes/leads.route')(app);
+// require('./routes/user.route')(app);
+// require('./routes/service.route')(app);
+// require('./routes/auth.route')(app);
 
 module.exports = app.listen(serverConfig.PORT, () => {
     console.log("Server is runing ar PORT : " + serverConfig.PORT)

@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const objectConverter = require('../utils/objectConverter');
 const constants = require('../utils/constants');
+const bcrypt = require('bcryptjs');
 
 exports.findAllUser = async (req, res) => {
     try{
@@ -29,7 +30,8 @@ exports.findAllUser = async (req, res) => {
 
 exports.findByUserId = async (req, res) => {
     try{
-        const user = await User.find({userId : req.params});
+        console.log(req.params.id)
+        const user = await User.findOne({userId : req.params.id});
         res.status(200).send(objectConverter.userResponse(user))
 
     }catch(err){
@@ -42,15 +44,28 @@ exports.findByUserId = async (req, res) => {
 
 exports.update = async (req, res) => {
     try{
-        console.log(req.params.id);
-        
         const user = await User.findById(req.params.id);
         user.userType = req.body.userType != undefined ? req.body.userType : user.userType;
         user.userStatus = req.body.userStatus != undefined ? req.body.userStatus : user.userStatus;
         user.name = req.body.name != undefined ? req.body.name : user.name
+        user.email = req.body.email != undefined ? req.body.email : user.email
+        user.editLeads = req.body.editLeads != undefined ? req.body.editLeads : user.editLeads
+        user.searchLeads = req.body.searchLeads != undefined ? req.body.searchLeads : user.searchLeads
+        user.viewLeads = req.body.viewLeads != undefined ? req.body.viewLeads : user.viewLeads
+        user.deleteLeads = req.body.deleteLeads != undefined ? req.body.deleteLeads : user.deleteLeads
+        user.editContact = req.body.editContact != undefined ? req.body.editContact : user.editContact
+        user.viewContact = req.body.viewContact != undefined ? req.body.viewContact : user.viewContact
+        user.searchContact = req.body.searchContact != undefined ? req.body.searchContact : user.searchContact
+        user.deleteContact = req.body.deleteContact != undefined ? req.body.deleteContact : user.deleteContact
+        user.editService = req.body.editService != undefined ? req.body.editService : user.editService
+        user.viewService = req.body.viewService != undefined ? req.body.viewService : user.viewService
+        user.searchService = req.body.searchService != undefined ? req.body.searchService : user.searchService
+        user.deleteService = req.body.deleteService != undefined ? req.body.deleteService : user.deleteService
+
 
         const updatedUser = await user.save();
         res.status(200).send({
+            id:updatedUser._id,
             name : updatedUser.name,
             email : updatedUser.email,
             userType : updatedUser.userType,
@@ -81,11 +96,12 @@ exports.create = async (req, res) => {
     try {
         const lastUser = await User.findOne({}, {}, { sort: { 'userId': -1 } }); // Find the last user with the highest userId
         const newUserId = lastUser ? lastUser.userId + 1 : 1; // Increment the userId by 1 or set it to 1 if there's no last user
-
+        console.log(req.body)
         const newUser = new User({
             userId: newUserId,
             name: req.body.name,
             email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 10),
             userType: req.body.userType,
             userStatus: req.body.userStatus,
             editLeads:req.body.editLeads,

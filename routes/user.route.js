@@ -1,19 +1,22 @@
+
+const express = require('express');
+const router = express.Router();
+
 const userController = require('../controllers/user.controller');
 const {authJwt} = require('../middlewares/index');
 
+router.get('/' , [authJwt.verifyToken ], userController.findAllUser);
 
-module.exports = (app) => {
+router.get('/:id', [authJwt.verifyToken,  authJwt.isAdminOrManager], userController.findByUserId);
 
-    app.get('/crm/api/v1/users' , [authJwt.verifyToken ], userController.findAllUser);
+router.put('/update/:id', [authJwt.verifyToken, authJwt.isAdminOrManager], userController.update);
 
-    app.get('/crm/api/v1/users/:id', [authJwt.verifyToken,  authJwt.isAdminOrManager], userController.findByUserId);
+router.post('/create', [authJwt.verifyToken, authJwt.isAdminOrManager, authJwt.validateUserTypeAndUserStatusUpdateRequest ], userController.create);
 
-    app.put('/crm/api/v1/users/:id', [authJwt.verifyToken, authJwt.isAdminOrManager], userController.update);
+router.delete('/delete/:id', [authJwt.verifyToken, authJwt.isAdminOrManager,authJwt.isAdminOrManager], userController.delete);
 
-    app.post('/crm/api/v1/users/create', [authJwt.verifyToken, authJwt.isAdminOrManager, authJwt.validateUserTypeAndUserStatusUpdateRequest ], userController.create);
+router.put('/statusUpdate/:id',userController.updateUserStatus);
 
-    app.delete('/crm/api/v1/users/:id', [authJwt.verifyToken, authJwt.isAdminOrManager,authJwt.isAdminOrManager], userController.delete);
 
-    app.put('/crm/api/v1/users/statusUpdate/:id',userController.updateUserStatus);
 
-}
+module.exports  = router;
