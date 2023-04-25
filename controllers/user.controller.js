@@ -44,6 +44,7 @@ exports.findByUserId = async (req, res) => {
 
 exports.update = async (req, res) => {
     try{
+        console.log(req.body,"body")
         const user = await User.findById(req.params.id);
         user.userType = req.body.userType != undefined ? req.body.userType : user.userType;
         user.userStatus = req.body.userStatus != undefined ? req.body.userStatus : user.userStatus;
@@ -85,7 +86,7 @@ exports.update = async (req, res) => {
         })
 
     }catch(err){
-        console.log("erroe in updating user data : ", err.message);
+        console.log("error in updating user data : ", err.message);
         res.status(500).send({
             message : "Internal server error"
         })
