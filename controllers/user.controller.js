@@ -31,7 +31,8 @@ exports.findAllUser = async (req, res) => {
 exports.getUserByToken = async (req, res) => {
     try {
       // Find the user by the req.user property set by verifyToken middleware
-      const user = await User.findOne({userId : parseInt(req.params.id)});
+      console.log(req.user,"user") 
+      const user = await User.findById(req.user._id);
       
       // Return the user object as JSON
       res.json(user);
@@ -47,7 +48,7 @@ exports.findByUserId = async (req, res) => {
         res.status(200).send(user)
 
     }catch(err){
-        console.log("Error in find by user id :", err.message);
+        console.log("Error in find by user id adssad :", err.message);
         res.status(500).send({
             message : "Internal Server Error"
         })
