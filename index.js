@@ -9,7 +9,7 @@ const routes = require('./routes/index.js');
 const path = require('path');
 const allowedOrigins =
   [
-    'http://localhost:3000',
+    // 'http://localhost:3000',
     'https://chipper-marigold-22f08b.netlify.app/'
   ];
 app.use(
