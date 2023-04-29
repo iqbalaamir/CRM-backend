@@ -10,7 +10,7 @@ const path = require('path');
 const allowedOrigins =
   [
     // 'http://localhost:3000',
-    'https://chipper-marigold-22f08b.netlify.app/'
+    'https://crm-guvi.netlify.app'
   ];
 app.use(
   cors({
